@@ -5,8 +5,9 @@ def is_prime(n)
 		return true
 	end
 
-	(2..n-1).each do |divisor|
+	(2..(n/2)).each do |divisor|
 		if ( n % divisor == 0 )
+			#print n.to_s + " is not prime\n"
 			return false
 		end
 	end
@@ -16,16 +17,19 @@ end
 
 def largest_prime_factor(n)
 
-	(1..n).each do |factor|
-
+	(n / 2).downto(2) do |potential_factor|
+		#print "potential_factor=" + potential_factor.to_s + "\n"
+		if (n % potential_factor == 0)
+			#print potential_factor.to_s + " is a factor of " + n.to_s + "\n"
+			if (is_prime(potential_factor))
+				return potential_factor
+			end
+		end
 	end
 
-	return prime_factor
+	return 1
 end
 
-#n = 13195
-#print "Largest prime factor of " + n.to_s + ": " + largest_prime_factor(n).to_s
-
-n = 5
-print n.to_s + " is " + ("not " unless (is_prime(n))) + "prime"
+n = 600851475143
+print "Largest prime factor of " + n.to_s + " is " + largest_prime_factor(n).to_s
 
