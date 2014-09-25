@@ -7,7 +7,6 @@ def is_prime(n)
 
 	(2..(n/2)).each do |divisor|
 		if ( n % divisor == 0 )
-			#print n.to_s + " is not prime\n"
 			return false
 		end
 	end
@@ -16,20 +15,35 @@ def is_prime(n)
 end
 
 def largest_prime_factor(n)
+	# Check if n itself is prime
+	return n if (is_prime(n))
 
-	(n / 2).downto(2) do |potential_factor|
-		#print "potential_factor=" + potential_factor.to_s + "\n"
-		if (n % potential_factor == 0)
-			#print potential_factor.to_s + " is a factor of " + n.to_s + "\n"
-			if (is_prime(potential_factor))
-				return potential_factor
-			end
+	lower_factors = []
+	upper_factors = []
+
+	# Iterate over the lower factors and calculate their partner factor
+	Math.sqrt(n).floor.downto(1).each do |lower_factor|
+		if (n % lower_factor == 0)
+			# Keep both arrays in descending order
+			lower_factors << lower_factor
+			upper_factors.insert(0, n / lower_factor)
 		end
+	end
+
+	(upper_factors + lower_factors).each do |factor|
+		return factor if (is_prime(factor))
 	end
 
 	return 1
 end
 
-n = 600851475143
-print "Largest prime factor of " + n.to_s + " is " + largest_prime_factor(n).to_s
+n = ARGV[0]
+if (n.nil?)
+	abort "Usage: largest_prime_factor INTEGER\n"
+elsif (false if (Integer(n)) rescue true)
+	abort "#{n} is not an Integer\n"
+end
+
+n = n.to_i
+print "The largest prime factor of #{n} is #{largest_prime_factor(n)}"
 
