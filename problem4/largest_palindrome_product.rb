@@ -1,21 +1,22 @@
 #!/usr/bin/env ruby
 
 def is_palindrome(n)
-	n_digits = 0
-	while (n % (10 ** n_digits) != n) do
-		n_digits += 1
+	n_array = []
+	
+	while (n > 0) do
+		#print "n=#{n}\n"
+		n_array.push(n % 10)
+		n /= 10
 	end
 
-	left_divisor = 10 ** (n_digits - 1)
-	right_divisor = 10
+	i = 0
 
-	while (left_divisor > right_divisor) do
-		print "left=" + (n / left_divisor).to_s + ", right=" + (n % right_divisor).to_s + "\n"
-		if ((n / left_divisor) != (n % right_divisor)) then
+	until (i >= (n_array.count - i)) do
+		#print "i=#{i}, -i=#{-i}\n"
+		if (n_array[i] != n_array[-i - 1])
 			return false
 		end
-		left_divisor /= 10
-		right_divisor *= 10
+		i += 1
 	end
 
 	return true
