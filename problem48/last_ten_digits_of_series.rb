@@ -1,48 +1,34 @@
 #!/usr/bin/env ruby
 
-# Gets the sum of all primes less than a given number
-# * *Args*    :
-#   - +n+ -> 
-# * *Returns* :
-#   - The sum of all primes less than n
-
-def is_prime(n)
-	if ( n <= 1 )
-		return false
-	end
-
-	(2..(Math.sqrt(n).floor)).each do |divisor|
-		if ( n % divisor == 0 )
-			return false
+def last_ten_digits_of_self_power(n)
+	product = 1
+	(1..n).each do
+		product = product * n
+		if (product > 10000000000)
+			product = product % 10000000000
 		end
 	end
 
-	return true
+	return product
 end
 
-def sum_of_primes(n)
+def last_ten_digits_of_series(n)
 	sum = 0
 	(1..n).each do |x|
-		sum += x if (is_prime(x))
-		print "x=#{x}, sum=#{sum}\n" if (x % 100000 == 0)
+		sum += self_power(x)
 	end
+
+	sum = sum % 10000000000
 
 	return sum
 end
 
-n = ARGV[0]
-if (n.nil?)
-	abort "Usage: #{$0} INTEGER\n"
-elsif (false if (Integer(n)) rescue true)
-	abort "#{n} is not an Integer\n"
-end
-
-n = n.to_i
+n = 1000
 
 start_time = Time.now
-sum = sum_of_primes(n)
+result = last_ten_digits_of_series(n)
 end_time = Time.now
 
-print "Sum of all primes less than #{n}: #{sum}\nElapsed time: " + \
-	"#{end_time - start_time} s"
+print "Last ten digits of series up to #{n}: #{result}\nElapsed time: " + \
+	"#{end_time - start_time} s\n"
 
